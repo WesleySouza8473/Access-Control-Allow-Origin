@@ -1,37 +1,30 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Client - Entrega CORS</title>
+  <meta charset="utf-8">
+  <title>Teste CORS</title>
 </head>
 <body>
   <h1>Teste CORS - Entrega</h1>
-  <p>RA: 2025104728 - WESLEY DOS SANTOS DE SOUZA</p>
-  <button id="executar">Executar Requisição</button>
+  <p>RA: 2025104728 — WESLEY DOS SANTOS DE SOUZA</p>
+  <button id="btn">Executar Requisição</button>
   <pre id="output"></pre>
 
   <script>
-    document.getElementById('executar').addEventListener('click', () => {
-      // fetch configurado conforme especificação (força preflight por usar header personalizado)
+    document.getElementById('btn').addEventListener('click', () => {
       fetch('http://localhost:8080/dados', {
         method: 'GET',
         headers: { 'X-Identificador-Estudante': '2025104728' }
       })
-      .then(async (res) => {
+      .then(async res => {
         const text = await res.text();
-        try {
-          const json = JSON.parse(text);
-          console.log('Resposta:', json);
-          document.getElementById('output').textContent = JSON.stringify(json, null, 2);
-        } catch (e) {
-          console.log('Resposta bruta:', text);
-          document.getElementById('output').textContent = text;
-        }
+        document.getElementById('output').textContent = `status: ${res.status}\n\n` + text;
+        console.log('Resposta:', res);
+        console.log('Body:', text);
       })
       .catch(err => {
-        console.error('Erro:', err);
-        document.getElementById('output').textContent = String(err);
+        document.getElementById('output').textContent = 'Erro: ' + err;
+        console.error(err);
       });
     });
   </script>
